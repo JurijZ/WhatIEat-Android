@@ -4,6 +4,8 @@ package com.jz.api;
  * Created by User on 25/06/2017.
  */
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -27,7 +29,8 @@ public class ApiAnalysis {
     public List<Ingredient> Post(JSONObject json)
     {
         StringBuilder sb = new StringBuilder();
-        String http = "http://10.0.2.2/api/manalysis";
+        String http = "http://10.0.2.2/api/manalysis"; // When running inside emulator
+        //String http = "http://192.168.1.69/api/manalysis"; // When running from the SmartPhone
         HttpURLConnection urlConnection=null;
         List<Ingredient> ingredients;
 
@@ -52,6 +55,8 @@ public class ApiAnalysis {
             //urlConnection.setRequestProperty("Host", "android.schoolportal.gr");
             urlConnection.connect();
 
+
+            Log.i("APIAnalysis", "Sending to API: " + json.toString());
             // Send JSON string over POST to the server
             OutputStreamWriter writer = new OutputStreamWriter(urlConnection.getOutputStream(), "UTF-8");
             writer.write(json.toString());
@@ -59,6 +64,9 @@ public class ApiAnalysis {
 
             // Process server response message
             int HttpResult = urlConnection.getResponseCode();
+
+            Log.i("APIAnalysis", "API response code: " + urlConnection.getResponseCode());
+
             if(HttpResult == HttpURLConnection.HTTP_OK){
                 BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(),"utf-8"));
 
@@ -93,13 +101,17 @@ public class ApiAnalysis {
                 // In case if needed a detailed message from the server
                 //return urlConnection.getResponseMessage();
 
+                Log.e("APIAnalysis", "API call did not returned 200");
+
                 // Creates a fake ingredient
                 Ingredient FailureIngredient = new Ingredient();
-                FailureIngredient.IngredientName = "HTTP Request Failed";
+                //FailureIngredient.IngredientName = "HTTP Request to API Failed";
+                FailureIngredient.IngredientName = urlConnection.getResponseMessage();
                 FailureIngredient.IngredientDangerLevel = 0;
                 FailureIngredient.FuzzyDistance = 0;
 
                 ingredients = Arrays.asList(FailureIngredient); // initiaizes and assigns
+
                 return ingredients;
             }
 
@@ -116,9 +128,10 @@ public class ApiAnalysis {
                 urlConnection.disconnect();
         }
 
+        Log.e("APIAnalysis", "Connection to API is not working!");
         //return " Nothing" via a fake ingredient;
         Ingredient NothingIngredient = new Ingredient();
-        NothingIngredient.IngredientName = "Nothing";
+        NothingIngredient.IngredientName = "Connection to API is not working!";
         NothingIngredient.IngredientDangerLevel = 0;
         NothingIngredient.FuzzyDistance = 0;
 

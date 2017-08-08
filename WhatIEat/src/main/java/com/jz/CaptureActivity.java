@@ -765,8 +765,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     JSONObject jsonPost = new JSONObject();
     try
     {
-        jsonPost.put("Text", ocrResult.getText());
-        //jsonPost.put("Text", "sugar, salt, oat flakes"); // Preparing JSON message, key must be "Text"
+        jsonPost.put("Text", ocrResult.getText()); // Preparing JSON message, key must be "Text"
+        //jsonPost.put("Text", "sugar, salt, sfsldfjlsvlskdv");
     }
     catch (JSONException e)
     {
@@ -774,12 +774,13 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
       e.printStackTrace();
     }
 
+    Log.i("CaptureActivity", "Right before the API call");
     ApiAnalysis ApiAnalyser = new ApiAnalysis();
     List<Ingredient> apiResponse = ApiAnalyser.Post(jsonPost); // makes HTTP POST request
 
 
       // Process POST reply
-      // Iterate over a list of Ingredients object collection and get a list of name propertiees
+      // Iterate over a list of Ingredients object collection and get a list of name properties
       List<String> ingredientNames = new ArrayList<String>();
 
       for (Ingredient ingredient : apiResponse) {
@@ -836,7 +837,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     TextView sourceLanguageTextView = (TextView) findViewById(R.id.source_language_text_view);
     sourceLanguageTextView.setText(sourceLanguageReadable);
     TextView ocrResultTextView = (TextView) findViewById(R.id.ocr_result_text_view);
-    ocrResultTextView.setText(ocrResult.getText() + firstIngredient);
+    ocrResultTextView.setText(ocrResult.getText() + "-" + firstIngredient);
 
     // Crudely scale betweeen 22 and 32 -- bigger font for shorter text
     int scaledSize = Math.max(22, 32 - ocrResult.getText().length() / 4);

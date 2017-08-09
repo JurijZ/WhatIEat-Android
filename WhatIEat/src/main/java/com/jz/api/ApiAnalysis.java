@@ -30,7 +30,7 @@ public class ApiAnalysis {
     {
         StringBuilder sb = new StringBuilder();
         String http = "http://10.0.2.2/api/manalysis"; // When running inside emulator
-        //String http = "http://192.168.1.69/api/manalysis"; // When running from the SmartPhone
+        //String http = "http://192.168.43.162/api/manalysis"; // When running from the SmartPhone via Tethering
         HttpURLConnection urlConnection=null;
         List<Ingredient> ingredients;
 

@@ -21,10 +21,10 @@ public class DetailsActivity extends Activity {
             message = extras.getString("MY_KEY");
         }
 
-        String message2 = intent.getStringExtra("MY_KEY");
+        //String message2 = intent.getStringExtra("MY_KEY");
 
         // Capture the layout's TextView and set the string as its text
-        TextView textView = (TextView) findViewById(R.id.textView);
-        textView.setText(message2);
+        TextView textView = (TextView) findViewById(R.id.descriptionView);
+        textView.setText(message);
     }
 }

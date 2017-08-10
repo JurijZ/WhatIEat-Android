@@ -7,10 +7,14 @@ package com.jz.language;
 public class Ingredient {
 
     public String IngredientName;
+    public String IngredientDescription;
     public Integer IngredientDangerLevel;
     public Integer FuzzyDistance;
 
     public Ingredient() {
 
     }
+
+    // Retrieve ingredients Name
+    public String getName() {return IngredientName;}
 }

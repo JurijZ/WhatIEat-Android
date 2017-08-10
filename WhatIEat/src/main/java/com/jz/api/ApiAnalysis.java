@@ -58,7 +58,7 @@ public class ApiAnalysis {
 
             Log.i("APIAnalysis", "Sending to API: " + json.toString());
             // Send JSON string over POST to the server
-            OutputStreamWriter writer = new OutputStreamWriter(urlConnection.getOutputStream(), "UTF-8");
+            OutputStreamWriter writer = new OutputStreamWriter(urlConnection.getOutputStream(), "utf-8");
             writer.write(json.toString());
             writer.close();
 
@@ -68,20 +68,8 @@ public class ApiAnalysis {
             Log.i("APIAnalysis", "API response code: " + urlConnection.getResponseCode());
 
             if(HttpResult == HttpURLConnection.HTTP_OK){
-                BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(),"utf-8"));
-
-                // If the body of the reply is empty (for example no engredients were recognized in the text) then return this
-                //if (br.readLine() == null)
-                //{
-                 //   // Creates a fake ingredient
-                 //   Ingredient FailureIngredient = new Ingredient();
-                 //   FailureIngredient.IngredientName = "Server did not recognized any of the engridients";
-                 //   FailureIngredient.IngredientDangerLevel = 0;
-                 //   FailureIngredient.FuzzyDistance = 0;
-
-                  //  ingredients = Arrays.asList(FailureIngredient); // initiaizes and assigns
-                  //  return ingredients;
-                //}
+                BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                //BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(),"utf-8"));
 
                 String line = null;
                 while ((line = br.readLine()) != null) {
@@ -90,12 +78,12 @@ public class ApiAnalysis {
                 br.close();
 
                 // Convert JSON string to a List of Ingredient objects
+                Log.e("APIAnalysis", sb.toString());
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 Gson gson = gsonBuilder.create();
                 ingredients = Arrays.asList(gson.fromJson(sb.toString(), Ingredient[].class)); // initiaizes and assigns
 
                 return ingredients;
-                //return sb.toString();
 
             }else{
                 // In case if needed a detailed message from the server
@@ -107,6 +95,7 @@ public class ApiAnalysis {
                 Ingredient FailureIngredient = new Ingredient();
                 //FailureIngredient.IngredientName = "HTTP Request to API Failed";
                 FailureIngredient.IngredientName = urlConnection.getResponseMessage();
+                FailureIngredient.IngredientDescription = "NA";
                 FailureIngredient.IngredientDangerLevel = 0;
                 FailureIngredient.FuzzyDistance = 0;
 
@@ -132,6 +121,7 @@ public class ApiAnalysis {
         //return " Nothing" via a fake ingredient;
         Ingredient NothingIngredient = new Ingredient();
         NothingIngredient.IngredientName = "Connection to API is not working!";
+        NothingIngredient.IngredientDescription = "NA";
         NothingIngredient.IngredientDangerLevel = 0;
         NothingIngredient.FuzzyDistance = 0;
 

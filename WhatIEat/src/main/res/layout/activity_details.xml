@@ -7,10 +7,10 @@
     tools:context="com.jz.DetailsActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/descriptionView"
         android:layout_width="277dp"
         android:layout_height="0dp"
-        android:text="TextView"
+        android:text="DescriptionView"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
